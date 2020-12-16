@@ -1,0 +1,8 @@
+prefix=/home/ros/catkin_ws/devel
+
+Name: grp6_proj
+Description: Description of grp6_proj
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

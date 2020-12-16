@@ -126,6 +126,13 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/ros/catkin_ws/build/gtest/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/au_crustcrawler_base/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/dynamixel_motor-kinetic/dynamixel_driver/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/dynamixel_motor-kinetic/dynamixel_motor/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/dynamixel_motor-kinetic/dynamixel_tutorials/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/dynamixel_motor-kinetic/dynamixel_controllers/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/dynamixel_motor-kinetic/dynamixel_msgs/cmake_install.cmake")
+  include("/home/ros/catkin_ws/build/grp6_proj/cmake_install.cmake")
 
 endif()
 

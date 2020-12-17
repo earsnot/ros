@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-
-"""
 #!/usr/bin/env python
 import cv2
 import numpy as np
@@ -15,12 +11,15 @@ thresholdValueBlue = 1
 
 
 def ColorDetector(Color):
-    
+    thresholdValueGreen = 10
+    thresholdValueRed = 170
+    thresholdValueYellow = 150
+    thresholdValueBlue = 1
     # Read image
-    frame = cv2.imread('test.png')
+    frame = cv2.imread('top1.png')
 
     #resize frame
-    frame = cv2.resize(frame, (640,480))
+    #frame = cv2.resize(frame, (640,480))
     #convert til HSV colorspace
     hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
     
@@ -29,7 +28,7 @@ def ColorDetector(Color):
     #wait untill keypress
     cv2.waitKey()
     
-    #finder farven grøn
+    #finder farven grn
     if Color == 'green':
         # Range for green
         green_lower = np.array([30,50,50])
@@ -42,7 +41,7 @@ def ColorDetector(Color):
         #HSVtoGRAY(exr)
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
         exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        #Threshold for hvornår farven bliver talt med
+        #Threshold for hvornr farven bliver talt med
         thresholded = ((exr>thresholdValueGreen)*255).astype('uint8')
 
     
@@ -63,7 +62,7 @@ def ColorDetector(Color):
         cv2.imshow("Frame", exr)
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         
         
         thresholded = ((exr>thresholdValueRed)*255).astype('uint8')
@@ -79,7 +78,7 @@ def ColorDetector(Color):
         cv2.imshow("Frame", exr)
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         
         
         thresholded = ((exr>thresholdValueBlue)*255).astype('uint8')
@@ -94,7 +93,7 @@ def ColorDetector(Color):
         cv2.imshow("Frame", exr)
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         
         thresholded = ((exr>thresholdValueYellow)*255).astype('uint8')
     else: 
@@ -114,7 +113,7 @@ def ColorDetector(Color):
         # Whats the area of the component?
         areal = cv2.contourArea(cnt)
         
-        # Gør noget hvis arealet er større end 1.
+        # Gr noget hvis arealet er strre end 1.
         if(areal > 1):
             # get the center of mass
             M = cv2.moments(cnt)
@@ -128,17 +127,19 @@ def ColorDetector(Color):
             # print cx1,cy1
             
             
-            # Tegn et sigtekorn på billedet, der markerer elementet.
+            # Tegn et sigtekorn p billedet, der markerer elementet.
             # <alter these lines>
             frame = cv2.drawMarker(frame, (cx, cy), (255,0,255),markerType=cv2.MARKER_CROSS, thickness=2)
             # </alter these lines>        
-    #viser billede med kryds på
+    #viser billede med kryds p
     cv2.imshow('frame annotated', frame)
 
     cv2.waitKey(0)
 
-    return    
-# kan ikke bruges af en eller anden ¨grund
+    return 
+
+ColorDetector('blue')    
+# kan ikke bruges af en eller anden grund
 # def HSVtoGRAY(exr):
 #     exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
 #     exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)

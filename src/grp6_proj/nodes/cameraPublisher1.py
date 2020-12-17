@@ -17,10 +17,10 @@ while 1:
   rate = rospy.Rate(0.1)
 
 
- while not rospy.is_shutdown():
-  	rospy.loginfo(frame0)
-    img = bridge.cv2_to_imgmsg(frame0, 'bgr8')
-    pub.publish(img)
+while not rospy.is_shutdown():
+  rospy.loginfo(frame0)
+  img = bridge.cv2_to_imgmsg(frame0, 'bgr8')
+  pub.publish(img)
 
 
 #getImage('http://192.168.1.100/video.cgi')

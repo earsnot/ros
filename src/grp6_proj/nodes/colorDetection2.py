@@ -13,7 +13,7 @@ import numpy as np
 
 
 def ColorDetector(Color):
-    thresholdValueGreen = 10
+    thresholdValueGreen = 50
     thresholdValueRed = 50
     thresholdValueYellow = 50
     thresholdValueBlue = 65
@@ -36,7 +36,7 @@ def ColorDetector(Color):
         #Hue has value from 0-180 (value from Photoshop/2)
         #Saturation 255 is full color, 0 is white (photoshop values is in %)
         #Value/brightness interval from 0-255. 255 is full color, 0 is black (photoshop values is in %)
-        green_lower = np.array([40,100,100])
+        green_lower = np.array([40,65,100])
         green_upper = np.array([75,255,255])
         mask_green = cv2.inRange(hsv, green_lower, green_upper)
 

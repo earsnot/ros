@@ -1,5 +1,0 @@
-**/.vscode/
-**/build/
-**/devel/
-.git
-.catkin_workspace

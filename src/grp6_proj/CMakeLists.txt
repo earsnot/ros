@@ -105,8 +105,8 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES grp6_proj
-#  CATKIN_DEPENDS cv2 numpy rospy std_msgs
-#  DEPENDS system_lib message_runtime
+  CATKIN_DEPENDS rospy std_msgs
+ # DEPENDS system_lib message_runtime
 )
 
 ###########

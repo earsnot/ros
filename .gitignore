@@ -1,5 +1,5 @@
-src/grp6_proj/.vscode/settings.json
-build/
-devel/
+**/.vscode/
+**/build/
+**/devel/
 .git
 .catkin_workspace

@@ -1,0 +1,9 @@
+parameters:
+  joint_names: ['joint1','joint2','joint3','joint4']
+  d1: 12.5
+  a2: 16.8
+  d4: 23.5
+  target_pos: [10, 10, 0]
+  above_target_pos: [10, 10, 20]
+  gripper_open: 4.1724
+  gripper_closed: 3.0680

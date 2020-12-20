@@ -3,6 +3,6 @@ prefix=/home/ros/catkin_ws/install
 Name: grp6_proj
 Description: Description of grp6_proj
 Version: 0.0.0
-Cflags: 
+Cflags: -I${prefix}/include
 Libs: -L${prefix}/lib 
 Requires: 

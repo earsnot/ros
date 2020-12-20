@@ -11,6 +11,8 @@ bc95ee8d5126dcc14ece4667d630f39d /home/ros/catkin_ws/devel/include/dynamixel_con
 ce196a70956319992653af57a2af25e7 /home/ros/catkin_ws/devel/include/dynamixel_msgs/JointState.h
 fd20a13ea52ecdc5cef149dccd277473 /home/ros/catkin_ws/devel/include/dynamixel_msgs/MotorState.h
 409febff976cdc7293a75a11e5e3a5d1 /home/ros/catkin_ws/devel/include/dynamixel_msgs/MotorStateList.h
+37630a94d6dbfa43ec35a099385f8ff4 /home/ros/catkin_ws/devel/include/grp6_proj/block_coords.h
+b47a49db2faff054215ecfdd991aca24 /home/ros/catkin_ws/devel/include/grp6_proj/block_coords_array.h
 8487d4ec243164d09225fdd8f94c228c /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_controllers/srv/_RestartController.py
 d5918a2571de24921f55c4f681fec940 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_controllers/srv/_SetComplianceMargin.py
 7e576cd64b3d39157eed92a7af58da59 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_controllers/srv/_SetCompliancePunch.py
@@ -25,6 +27,9 @@ f01afa264306dd672c90c0c028a6a73c /home/ros/catkin_ws/devel/lib/python2.7/dist-pa
 bde0e00bc80065098024a605c59e09a2 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_msgs/msg/_MotorState.py
 e54acb02f1396f9277f26a1d350d470e /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_msgs/msg/_MotorStateList.py
 10f1b64a59f54a5a2edd8add7738b4d2 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/dynamixel_msgs/msg/__init__.py
+5079b1cddb748de0b13782703bec8203 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/grp6_proj/msg/__init__.py
+961f2fdc95acb5b883b7e5a98e3b6704 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/grp6_proj/msg/_block_coords.py
+f788815ee70ba49779eaff357d504ba6 /home/ros/catkin_ws/devel/lib/python2.7/dist-packages/grp6_proj/msg/_block_coords_array.py
 8fb4e4298b68574c515817fed9cedd58 /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_controllers/srv/RestartController.lisp
 0048b1935ed08a8b03507c022770d8c7 /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_controllers/srv/SetComplianceMargin.lisp
 152bb85ab85aefdc8547418118f55a94 /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_controllers/srv/SetCompliancePunch.lisp
@@ -37,6 +42,8 @@ eb3811bba5e49c9482ae7fe039deff9a /home/ros/catkin_ws/devel/share/common-lisp/ros
 31516e4ea006249aa4eb84645a21dc86 /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_msgs/msg/JointState.lisp
 e9adae8da48344504e6dde4e2b9e8abb /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_msgs/msg/MotorState.lisp
 b6e8860cb89c341f05ae16adc45007ee /home/ros/catkin_ws/devel/share/common-lisp/ros/dynamixel_msgs/msg/MotorStateList.lisp
+6b4f5ef5fbe0144d51248ac102d0d85f /home/ros/catkin_ws/devel/share/common-lisp/ros/grp6_proj/msg/block_coords.lisp
+5a06c417f4575cabb1f8caabd6cf5e0f /home/ros/catkin_ws/devel/share/common-lisp/ros/grp6_proj/msg/block_coords_array.lisp
 da39df0569440eb274317ea57e214396 /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_controllers/srv/RestartController.js
 448dbcf8e375f6d9adf478ecb5665a03 /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_controllers/srv/SetComplianceMargin.js
 79c03a6728c226e71fad8ad88aac666b /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_controllers/srv/SetCompliancePunch.js
@@ -49,6 +56,8 @@ f29a020371394f6f327b518bf93bb985 /home/ros/catkin_ws/devel/share/gennodejs/ros/d
 bbbbf4f8b7bfe8318951a9dcc8a31d76 /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_msgs/msg/JointState.js
 941dadda3e7231274847b247be7d990b /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_msgs/msg/MotorState.js
 4e12752e613bfab84cac5038a9481550 /home/ros/catkin_ws/devel/share/gennodejs/ros/dynamixel_msgs/msg/MotorStateList.js
+5b04a543c3f1c3af3f535fb56a175dce /home/ros/catkin_ws/devel/share/gennodejs/ros/grp6_proj/msg/block_coords.js
+f049907d71e83e31c0bb4642fb99e3b8 /home/ros/catkin_ws/devel/share/gennodejs/ros/grp6_proj/msg/block_coords_array.js
 09ac9ece80c9d7dcf558de29d8858be9 /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_controllers/manifest.l
 7c00427d42880f53ba9b086abcb0e779 /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_controllers/srv/RestartController.l
 3aaedf518cb6e314e621e981f575c5b6 /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_controllers/srv/SetComplianceMargin.l
@@ -63,6 +72,9 @@ be01259fd3b18684d6d22e2d4ff605ff /home/ros/catkin_ws/devel/share/roseus/ros/dyna
 4cab54b6523c37841aa559b8ffbd35d9 /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_msgs/msg/JointState.l
 93532724b839db2c31bcf94b36d84d47 /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_msgs/msg/MotorState.l
 282618cbeaff5c4c905d3f328d394e1e /home/ros/catkin_ws/devel/share/roseus/ros/dynamixel_msgs/msg/MotorStateList.l
+df6e3c039a334596fb8536785d810a4e /home/ros/catkin_ws/devel/share/roseus/ros/grp6_proj/manifest.l
+307cb49a8f6fc35e1e4ae5fe6da8ea33 /home/ros/catkin_ws/devel/share/roseus/ros/grp6_proj/msg/block_coords.l
+3a5a226b3fdc4a90557262670d1a029c /home/ros/catkin_ws/devel/share/roseus/ros/grp6_proj/msg/block_coords_array.l
 eae5e4e7ec6a73435cbd24f78ac00ac9 CMakeFiles/clean_test_results
 23637a98613b6e0f6ba11385d0e418ed dynamixel_motor-kinetic/dynamixel_controllers/CMakeFiles/_dynamixel_controllers_generate_messages_check_deps_RestartController
 e36f87d009aa61801f40365af7c80aa5 dynamixel_motor-kinetic/dynamixel_controllers/CMakeFiles/_dynamixel_controllers_generate_messages_check_deps_SetComplianceMargin
@@ -86,3 +98,10 @@ e9bd29c7e84bfe52c36a2e719df8a974 dynamixel_motor-kinetic/dynamixel_msgs/CMakeFil
 e9bd29c7e84bfe52c36a2e719df8a974 dynamixel_motor-kinetic/dynamixel_msgs/CMakeFiles/dynamixel_msgs_generate_messages_lisp
 e9bd29c7e84bfe52c36a2e719df8a974 dynamixel_motor-kinetic/dynamixel_msgs/CMakeFiles/dynamixel_msgs_generate_messages_nodejs
 e9bd29c7e84bfe52c36a2e719df8a974 dynamixel_motor-kinetic/dynamixel_msgs/CMakeFiles/dynamixel_msgs_generate_messages_py
+fae7f7ab08459c31a818e1f00b88cbfd grp6_proj/CMakeFiles/_grp6_proj_generate_messages_check_deps_block_coords
+050b42dce38da3bf86b5ac8bbaad92bf grp6_proj/CMakeFiles/_grp6_proj_generate_messages_check_deps_block_coords_array
+a42ffbacfd310a93147b81d23f658748 grp6_proj/CMakeFiles/grp6_proj_generate_messages_cpp
+a42ffbacfd310a93147b81d23f658748 grp6_proj/CMakeFiles/grp6_proj_generate_messages_eus
+a42ffbacfd310a93147b81d23f658748 grp6_proj/CMakeFiles/grp6_proj_generate_messages_lisp
+a42ffbacfd310a93147b81d23f658748 grp6_proj/CMakeFiles/grp6_proj_generate_messages_nodejs
+a42ffbacfd310a93147b81d23f658748 grp6_proj/CMakeFiles/grp6_proj_generate_messages_py

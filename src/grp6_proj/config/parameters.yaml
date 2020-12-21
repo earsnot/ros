@@ -7,3 +7,8 @@ parameters:
   above_target_pos: [10, 10, 20]
   gripper_open: 4.1724
   gripper_closed: 3.0680
+  table_length: 73
+  table_width: 42.5
+  frame_width: 640
+  frame_height: 480
+  

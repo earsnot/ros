@@ -21,6 +21,7 @@ JointTrajectoryActionController for the joints.
                     update_rate: 10
         </rosparam>
     </node> -->
+    <node name="topcam_img_processor" pkg="grp6_proj" type="TopCamImageProcessor.py" respawn='true'/>
     
     <!-- 
     	Load joint configuration to parameter server 

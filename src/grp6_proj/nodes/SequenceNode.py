@@ -79,8 +79,8 @@ class SequenceNode:
 		D = (s2+r**2-self.a2**2-self.d4**2)/(2*self.a2*self.d4)
 
 		q1 = math.atan2(y,x)
-		q2 = math.atan2(math.sqrt(s2),r) - math.atan2(self.d4*math.sin(q3), self.a2 + self.d4*math.cos(q3)) # Eqn. (9,10,11)
 		q3 = math.atan2(-math.sqrt(1-D**2), D)
+		q2 = math.atan2(math.sqrt(s2),r) - math.atan2(self.d4*math.sin(q3), self.a2 + self.d4*math.cos(q3)) # Eqn. (9,10,11)
 		q4 = 0 #disregarding orientation atm
 		return q1,q2,q3,q4
 
@@ -95,25 +95,25 @@ class SequenceNode:
 
 		for single_block_coords in blocks_coords:
 			if self.current_arm_position == self.invkin(self.start_pos) and self.last_pos != single_block_coords:
-				start_to_square = trajectory(self.start_pos,single_block_coords)
+				start_to_square = Trajectory.trajectory(self.start_pos,single_block_coords)
 				self.send_command(start_to_square)
 
 			if self.current_arm_position == self.invkin(single_block_coords):
 				self.send_gripper_command(self.gripper_close)
 
 			if self.current_arm_position == self.gripper_close:
-				square_to_Above_cross = trajectory(single_block_coords,self.above_target_pos)
+				square_to_Above_cross = Trajectory.trajectory(single_block_coords,self.above_target_pos)
 				self.send_command(square_to_Above_cross)
 
 			if self.current_arm_position == self.invkin(self.above_target_pos):
-				down_to_cross = trajectory(self.above_target_pos,self.target_pos)
+				down_to_cross = Trajectory.trajectory(self.above_target_pos,self.target_pos)
 				self.send_command(down_to_cross)
 
 			if self.current_arm_position == self.invkin(self.target_pos):
 				self.send_gripper_command(self.gripper_open)
 
 			if self.current_arm_position == self.gripper_open:
-				back_to_start = trajectory(self.target_pos,self.start_pos)
+				back_to_start = Trajectory.trajectory(self.target_pos,self.start_pos)
 				self.send_command(back_to_start)
 				self.last_pos = single_block_coords
 

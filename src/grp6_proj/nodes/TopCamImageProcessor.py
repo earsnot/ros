@@ -4,27 +4,25 @@ import numpy as np
 import rospy
 from std_msgs.msg import String
 from std_msgs.msg import Float32
+from grp6_proj.msg import block_coords
 
 #Hue has value from 0-180 (value from Photoshop/2)
 #Saturation 255 is full color, 0 is white (photoshop values is in %)
 #Value/brightness interval from 0-255. 255 is full color, 0 is black (photoshop values is in %)
-
-
 #inputColor = 'green'
 #Threshold values
 
-
-
+pub = rospy.Publisher('XandY', Float32, queue_size=10)
+rospy.init_node('TopCamImageProcessor') #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
+rospy.Sub
 
 def ColorDetector(Color):
-    pub = rospy.Publisher('XandY', Float32, queue_size=10)
-    rospy.init_node('TopCamImageProcessor') #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
     thresholdValueGreen = 50
     thresholdValueRed = 50
     thresholdValueYellow = 50
     thresholdValueBlue = 65
     # Read image
-    frame = cv2.imread('/home/ros/catkin_repo/ros/src/grp6_proj/nodes/top1')
+    frame = cv2.imread('/home/ros/catkin_ws/src/grp6_proj/nodes/top1.png')
 
     #resize frame
     frame = cv2.resize(frame, (640,480))
@@ -73,7 +71,7 @@ def ColorDetector(Color):
         cv2.imshow("Frame", exr)
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         
         
         thresholded = ((exr>thresholdValueRed)*255).astype('uint8')
@@ -90,7 +88,7 @@ def ColorDetector(Color):
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
         cv2.imshow("1", exr)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         cv2.imshow("2", exr)
         #noise reduction usuin blurfilter
         kernel = np.ones((5,5),np.float32)/25
@@ -110,7 +108,7 @@ def ColorDetector(Color):
         cv2.imshow("Frame", exr)
 
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY);
+        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
         #noise reduction usuin blurfilter
         kernel = np.ones((5,5),np.float32)/25
         exr = cv2.filter2D(exr,-1,kernel)

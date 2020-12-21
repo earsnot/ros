@@ -1,2 +1,0 @@
-au_crustcrawler_base:dynamixel_motor-kinetic/dynamixel_controllers:dynamixel_motor-kinetic/dynamixel_driver:dynamixel_motor-kinetic/dynamixel_motor:dynamixel_motor-kinetic/dynamixel_msgs:dynamixel_motor-kinetic/dynamixel_tutorials:grp6_proj
--DCATKIN_DEVEL_PREFIX=/home/ros/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ros/catkin_ws/install -G Unix Makefiles

@@ -1,1 +1,1 @@
-XYArray[] data
+XYCoords[] data

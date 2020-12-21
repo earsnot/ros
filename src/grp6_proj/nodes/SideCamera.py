@@ -17,7 +17,7 @@ from std_msgs.msg import Float32
 
 def ColorDetector(Color):
     # Read image
-    frame = cv2.imread('/home/ros/catkin_repo/ros/src/grp6_proj/nodes/sideTest')
+    frame = cv2.imread('/home/ros/catkin_repo/ros/src/grp6_proj/nodes/side5')
 
     #resize frame
     frame = cv2.resize(frame, (640,480))
@@ -25,17 +25,17 @@ def ColorDetector(Color):
     hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
     
     # Show image on screen
-    cv2.imshow('frame', frame)
+    #cv2.imshow('frame', frame)
     #wait untill keypress
-    cv2.waitKey()
+    #cv2.waitKey()
     
-    if Color == 'height':
+    while not rospy.is_shutdown():
         # Range for green
         #Hue has value from 0-180 (value from Photoshop/2)
         #Saturation 255 is full color, 0 is white (photoshop values is in %)
         #Value/brightness interval from 0-255. 255 is full color, 0 is black (photoshop values is in %)
         green_lower = np.array([40,65,1])
-        green_upper = np.array([110,255,255])
+        green_upper = np.array([110,255,150])
         mask_green = cv2.inRange(hsv, green_lower, green_upper)
         # Range for lower red
         red_lower = np.array([0,150,1])
@@ -47,8 +47,8 @@ def ColorDetector(Color):
         mask_red2 = cv2.inRange(hsv, red_lower, red_upper)
         mask_red = mask_red1 + mask_red2
         # Range for blue
-        blue_lower = np.array([105,50,1])
-        blue_upper = np.array([125,255,255])
+        blue_lower = np.array([105,50,30])
+        blue_upper = np.array([125,255,150])
         mask_blue = cv2.inRange(hsv, blue_lower, blue_upper)
         # Range for yellow
         yellow_lower = np.array([25,80,20])
@@ -62,40 +62,44 @@ def ColorDetector(Color):
         exr_red = cv2.bitwise_and(frame, frame, mask=mask_red)
         exr_yellow = cv2.bitwise_and(frame, frame, mask=mask_yellow)
         exr_all = exr_blue + exr_green + exr_red + exr_yellow
-        cv2.imshow("Frame", exr_blue)
-        cv2.waitKey()
-        cv2.imshow("Frame", exr_green)
-        cv2.waitKey()
-        cv2.imshow("Frame", exr_red)
-        cv2.waitKey()
-        cv2.imshow("Frame", exr_yellow)
-        cv2.waitKey()
-        cv2.imshow("exr_all", exr_all)
-        cv2.waitKey()
+        # Used for test to show image
+        # cv2.imshow("blue", exr_blue)
+        # cv2.waitKey()
+        # cv2.imshow("green", exr_green)
+        # cv2.waitKey()
+        # cv2.imshow("red", exr_red)
+        # cv2.waitKey()
+        # cv2.imshow("yellow", exr_yellow)
+        # cv2.waitKey()
+        # cv2.imshow("exr_all", exr_all)
+        # cv2.waitKey()
 
 
         #Isolate Value/brightness from HSV
         hsv1 = cv2.cvtColor(exr_all, cv2.COLOR_BGR2HSV)
         h, s, v1 = cv2.split(hsv1)
-        cv2.imshow("gray-image",v1)
-        cv2.waitKey()
+        # cv2.imshow("gray-image",v1)
+        # cv2.waitKey()
         
 
         im_bw = v1 #because im lazy and dont want tp change variable names
         (thresh, im_bw) = cv2.threshold(im_bw, 10, 255, 0) #converts gray to black and white. A value of 10 is chosen because we have very low light in out picture
-        cv2.imshow('bw_1', im_bw)
-        cv2.waitKey()
-        
-        contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) [-2:]
+        # cv2.imshow('bw_1', im_bw)
+        # cv2.waitKey()
 
 
-        cv2.drawContours(im_bw, contours, -1, (0,255,0), 3)  
+        contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) [-2:]
 
+
+        for c in contours:
+            x,y,w,h = cv2.boundingRect(c)
+            if (w>30 and w<110) and h>30:
+                cv2.rectangle(exr_all,(x,y),(x+w,y+h),(255,0,255),1)
+                #cv2.imshow('X',X)
+                print(h)
+         
         cv2.imshow('cnt_1', exr_all)
         cv2.waitKey()
-            
-        #cv2.imshow('final', exr_all)
-        #cv2.waitKey()
             
     return
 ColorDetector('height')   #used for test

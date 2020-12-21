@@ -49,8 +49,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
   FILES
-  block_coords.msg
-  block_coords_array.msg
+  XYArray.msg
+  ZArray.msg
   )
 
 ## Generate services in the 'srv' folder

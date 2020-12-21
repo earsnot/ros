@@ -6,7 +6,8 @@ from control_msgs.msg import FollowJointTrajectoryAction
 from control_msgs.msg import FollowJointTrajectoryFeedback
 from control_msgs.msg import FollowJointTrajectoryResult
 from control_msgs.msg import FollowJointTrajectoryGoal
-from grp6_proj.msg import block_coords_array
+from grp6_proj.msg import XYArray
+from grp6_proj.msg import ZArray
 from trajectory_msgs.msg import JointTrajectoryPoint
 from trajectory_msgs.msg import JointTrajectory
 from utils import Trajectory
@@ -28,10 +29,14 @@ class SequenceNode:
 		self.seq_num = 0
 		self.gripper_open = rospy.get_param("/parameters/gripper_open")
 		self.gripper_close = rospy.get_param("/parameters/gripper_closed")
-		rospy.Subscriber('Coordinates', block_coords_array, self.callback)
+		rospy.Subscriber('XYTopic', XYArray, self.xy_callback)
+		rospy.Subscriber('ZTopic', ZArray, self.z_callback)
 		
-	def callback(self, data):
-		self.latest_block_coords = data.data
+	def xy_callback(self, data):
+		self.latest_xy_coords = data.data
+
+	def z_callback(self, data):
+		self.latest_z_coords = data.data
 
 	def send_command(self,coords):
 		joint_positions = []
@@ -91,7 +96,7 @@ class SequenceNode:
 
 	def place_blocks(self):
 
-		blocks_coords = self.latest_block_coords
+		blocks_coords = [self.latest_xy_coords, self.latest_z_coords]
 
 		for single_block_coords in blocks_coords:
 			if self.current_arm_position == self.invkin(self.start_pos) and self.last_pos != single_block_coords:

@@ -30,8 +30,7 @@ def ColorDetector(Color):
     cv2.imshow('frame', frame)
     #wait untill keypress
     cv2.waitKey()
-    
-    #find color green
+
     if Color == 'all':
         # Range for green
         #Hue has value from 0-180 (value from Photoshop/2)
@@ -40,7 +39,7 @@ def ColorDetector(Color):
         green_lower = np.array([40,65,100])
         green_upper = np.array([75,255,255])
         mask_green = cv2.inRange(hsv, green_lower, green_upper)
-
+        #use the mask
         exr_green = cv2.bitwise_and(frame, frame, mask=mask_green)
         cv2.imshow("green", exr_green)
         cv2.waitKey()
@@ -81,7 +80,7 @@ def ColorDetector(Color):
         cv2.waitKey()
               
         
-
+        #combine all masks
         exr_all = exr_blue + exr_green + exr_red + exr_yellow
 
         cv2.imshow("Samlet", exr_all)
@@ -95,7 +94,7 @@ def ColorDetector(Color):
         
 
         im_bw = v1 #because im lazy and dont want tp change variable names
-        (thresh, im_bw) = cv2.threshold(im_bw, 110, 255, 0) #converts gray to black and white. A value of 10 is chosen because we have very low light in out picture
+        (thresh, im_bw) = cv2.threshold(im_bw, 110, 255, 0) #converts gray to black and white. First value is the threshold for when a color is deamed to be white
         cv2.imshow('bw_1', im_bw)
         cv2.waitKey()
 
@@ -117,7 +116,7 @@ def ColorDetector(Color):
         # Whats the area of the component?
         areal = cv2.contourArea(cnt)
         
-        # Do something is area is > 1
+        # Do something is area is > 10
         if(areal > 10):
             # get the center of mass
             M = cv2.moments(cnt)

@@ -50,7 +50,9 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   XYArray.msg
+  XYCoords.msg
   ZArray.msg
+  ZCoords.msg
   )
 
 ## Generate services in the 'srv' folder

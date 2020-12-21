@@ -1,1 +1,1 @@
-float32[] Coords
+XYArray[] data

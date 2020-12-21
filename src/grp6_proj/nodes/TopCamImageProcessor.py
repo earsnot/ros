@@ -4,7 +4,7 @@ import numpy as np
 import rospy
 from std_msgs.msg import String
 from std_msgs.msg import Float32
-from grp6_proj.msg import block_coords
+#from grp6_proj.msg import block_coords
 
 #Hue has value from 0-180 (value from Photoshop/2)
 #Saturation 255 is full color, 0 is white (photoshop values is in %)
@@ -14,15 +14,12 @@ from grp6_proj.msg import block_coords
 
 pub = rospy.Publisher('XandY', Float32, queue_size=10)
 rospy.init_node('TopCamImageProcessor') #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
-rospy.Sub
+#rospy.Sub
 
 def ColorDetector(Color):
-    thresholdValueGreen = 50
-    thresholdValueRed = 50
-    thresholdValueYellow = 50
-    thresholdValueBlue = 65
+
     # Read image
-    frame = cv2.imread('/home/ros/catkin_ws/src/grp6_proj/nodes/top1.png')
+    frame = cv2.imread('/home/ros/catkin_repo/ros/top1')
 
     #resize frame
     frame = cv2.resize(frame, (640,480))
@@ -35,7 +32,7 @@ def ColorDetector(Color):
     cv2.waitKey()
     
     #find color green
-    if Color == 'green':
+    if Color == 'all':
         # Range for green
         #Hue has value from 0-180 (value from Photoshop/2)
         #Saturation 255 is full color, 0 is white (photoshop values is in %)
@@ -44,87 +41,76 @@ def ColorDetector(Color):
         green_upper = np.array([75,255,255])
         mask_green = cv2.inRange(hsv, green_lower, green_upper)
 
-        exr = cv2.bitwise_and(frame, frame, mask=mask_green)
-        cv2.imshow("Frame", exr)
+        exr_green = cv2.bitwise_and(frame, frame, mask=mask_green)
+        cv2.imshow("green", exr_green)
+        cv2.waitKey()
 
-        #HSVtoGRAY(exr)
-        exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        #Threshold for hvornaar farven bliver talt med
-        thresholded = ((exr>thresholdValueGreen)*255).astype('uint8')
 
-    
-    elif Color == 'red':
         # Range for lower red
         red_lower = np.array([0,150,100])
         red_upper = np.array([10,255,255])
         mask_red1 = cv2.inRange(hsv, red_lower, red_upper)
-
         # Range for upper range
         red_lower = np.array([170,150,50])
         red_upper = np.array([180,255,255])
         mask_red2 = cv2.inRange(hsv, red_lower, red_upper)
-
         mask_red = mask_red1 + mask_red2
-        exr = cv2.bitwise_and(frame, frame, mask=mask_red)
-    
-        cv2.imshow("Frame", exr)
-
-        exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        
-        
-        thresholded = ((exr>thresholdValueRed)*255).astype('uint8')
-        
-    
-    elif Color == 'blue':
-        # Range for blue
+        exr_red = cv2.bitwise_and(frame, frame, mask=mask_red)
+        cv2.imshow("red", exr_red)
+        cv2.waitKey()
+     
+                
+                
+                # Range for blue
         blue_lower = np.array([105,50,50])
         blue_upper = np.array([125,255,255])
         mask_blue = cv2.inRange(hsv, blue_lower, blue_upper)
 
-        exr = cv2.bitwise_and(frame, frame, mask=mask_blue)
-        cv2.imshow("Frame", exr)
+        exr_blue = cv2.bitwise_and(frame, frame, mask=mask_blue)
+        cv2.imshow("blue", exr_blue)
+        cv2.waitKey()
 
-        exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        cv2.imshow("1", exr)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        cv2.imshow("2", exr)
-        #noise reduction usuin blurfilter
-        kernel = np.ones((5,5),np.float32)/25
-        exr = cv2.filter2D(exr,-1,kernel)
-        cv2.imshow("3", exr)
         
-        
-        thresholded = ((exr>thresholdValueBlue)*255).astype('uint8')
-    
-    elif Color == 'yellow':
         # Range for yellow
         yellow_lower = np.array([25,80,20])
         yellow_upper = np.array([35,255,255])
         mask_yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
 
-        exr = cv2.bitwise_and(frame, frame, mask=mask_yellow)
-        cv2.imshow("Frame", exr)
-
-        exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
-        exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        #noise reduction usuin blurfilter
-        kernel = np.ones((5,5),np.float32)/25
-        exr = cv2.filter2D(exr,-1,kernel)
+        exr_yellow = cv2.bitwise_and(frame, frame, mask=mask_yellow)
+        cv2.imshow("YELLOW", exr_yellow)
+        cv2.waitKey()
+              
         
-        thresholded = ((exr>thresholdValueYellow)*255).astype('uint8')
+
+        exr_all = exr_blue + exr_green + exr_red + exr_yellow
+
+        cv2.imshow("Samlet", exr_all)
+        cv2.waitKey()   
+
+        #Isolate Value/brightness from HSV
+        hsv1 = cv2.cvtColor(exr_all, cv2.COLOR_BGR2HSV)
+        h, s, v1 = cv2.split(hsv1)
+        cv2.imshow("gray-image",v1)
+        cv2.waitKey()
+        
+
+        im_bw = v1 #because im lazy and dont want tp change variable names
+        (thresh, im_bw) = cv2.threshold(im_bw, 110, 255, 0) #converts gray to black and white. A value of 10 is chosen because we have very low light in out picture
+        cv2.imshow('bw_1', im_bw)
+        cv2.waitKey()
+
+
     else: 
         print('***Please choose a valid color***')
 
     
     # show those areas
-    #cv2.imshow('exrWithThreshold', thresholded)
+    cv2.imshow('exrWithThreshold', im_bw)
     cv2.waitKey()
 
     #dette kode er taget fra undervisningen - Skrevet af: Mads Dyrmann and Henrik Skov Midtiby
     # Find connected components
-    _, contours, _ = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) [-2:]
     
     # loop through all components, one at the time
     for cnt in contours:
@@ -132,7 +118,7 @@ def ColorDetector(Color):
         areal = cv2.contourArea(cnt)
         
         # Do something is area is > 1
-        if(areal > 1):
+        if(areal > 10):
             # get the center of mass
             M = cv2.moments(cnt)
             cx = int(M['m10']/M['m00'])
@@ -170,5 +156,5 @@ def ColorDetector(Color):
     cv2.waitKey(0)   
     
     return
-ColorDetector('green')   #used for test
+ColorDetector('all')   #used for test
 

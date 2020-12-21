@@ -86,7 +86,7 @@ def ColorDetector(Color):
         cv2.imshow('bw_1', im_bw)
         cv2.waitKey()
         
-        _, contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) [-2:]
 
 
         cv2.drawContours(im_bw, contours, -1, (0,255,0), 3)  

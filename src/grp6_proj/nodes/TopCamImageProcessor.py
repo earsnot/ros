@@ -23,6 +23,7 @@ hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
 #cv2.waitKey()
 
 while not rospy.is_shutdown():
+    print('is not shutdown')
     # Range for green
     #Hue has value from 0-180 (value from Photoshop/2)
     #Saturation 255 is full color, 0 is white (photoshop values is in %)
@@ -91,55 +92,56 @@ while not rospy.is_shutdown():
 
 
 
-# show those areas
-#cv2.imshow('exrWithThreshold', im_bw)
-#cv2.waitKey()
+    # show those areas
+    #cv2.imshow('exrWithThreshold', im_bw)
+    #cv2.waitKey()
 
-#dette kode er taget fra undervisningen - Skrevet af: Mads Dyrmann and Henrik Skov Midtiby
-# Find connected components
-contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) [-2:]
+    #dette kode er taget fra undervisningen - Skrevet af: Mads Dyrmann and Henrik Skov Midtiby
+    # Find connected components
+    contours, hierarchy = cv2.findContours(im_bw, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) [-2:]
 
 
-coordinates=[]
-# loop through all components, one at the time
-for cnt in contours:
-    # Whats the area of the component?
-    areal = cv2.contourArea(cnt)
-    
-    # Do something is area is > 10
-    if(areal > 10):
-        # get the center of mass
-        M = cv2.moments(cnt)
-        cx = int(M['m10']/M['m00'])
-        cy = int(M['m01']/M['m00'])
-        #print(cx, cy)
-        #coordinates = "x: %s, y: %d" % (cx,cy)
-
-        #alternativ
-        # cx=sum(cnt[:,0][:,0])/len(cnt[:,0][:,0])
-        # cy=sum(cnt[:,0][:,1])/len(cnt[:,0][:,1])
-
-        #Print the coordinates that are within our limits/table
-        A1 = (cy>34 and cy<310) and (cx>1 and cx<237)
-        A2 = (cy>34 and cy<310) and (cx>381 and cx<600)
-        A3 = (cy>34 and cy<233) and (cx>237 and cx<381)
-        if (A1 or A2 or A3):
-            #print (cx)
-            #print (cy)
-            coords = XYArray(Coords=[cx,cy])
-            coordinates.append(coords)
-            pub.publish(coords)
+    coordinates=[]
+    # loop through all components, one at the time
+    for cnt in contours:
+        # Whats the area of the component?
+        areal = cv2.contourArea(cnt)
         
-        #print ('x:', cx,'y:', cy)
-        
-        
+        # Do something is area is > 10
+        if(areal > 10):
+            # get the center of mass
+            M = cv2.moments(cnt)
+            cx = int(M['m10']/M['m00'])
+            cy = int(M['m01']/M['m00'])
+            #print(cx, cy)
+            #coordinates = "x: %s, y: %d" % (cx,cy)
 
-        # Tegn et sigtekorn paa billedet, der markerer elementet.
-        # <alter these lines>
-        frame = cv2.drawMarker(frame, (cx, cy), (255,0,255),markerType=cv2.MARKER_CROSS, thickness=2)
-        # </alter these lines>        
-#viser billede med kryds paa
-#cv2.imshow('frame annotated', frame)
+            #alternativ
+            # cx=sum(cnt[:,0][:,0])/len(cnt[:,0][:,0])
+            # cy=sum(cnt[:,0][:,1])/len(cnt[:,0][:,1])
 
-#cv2.waitKey(0)
+            #Print the coordinates that are within our limits/table
+            A1 = (cy>34 and cy<310) and (cx>1 and cx<237)
+            A2 = (cy>34 and cy<310) and (cx>381 and cx<600)
+            A3 = (cy>34 and cy<233) and (cx>237 and cx<381)
+            if (A1 or A2 or A3):
+                print (cx)
+                print (cy)
+                coords = XYArray(Coords=[cx,cy])
+                coordinates.append(coords)
+                #pub.publish(coords)
+                rospy.Rate(1).sleep() #publish every 1 sec
+            
+            #print ('x:', cx,'y:', cy)
+            
+    array=XYArray(Coords=coordinates)
+    pub.publish(array)        
 
+            # Tegn et sigtekorn paa billedet, der markerer elementet.
+            # <alter these lines>
+            #frame = cv2.drawMarker(frame, (cx, cy), (255,0,255),markerType=cv2.MARKER_CROSS, thickness=2)
+            # </alter these lines>        
+    #viser billede med kryds paa
+    #cv2.imshow('frame annotated', frame)
+
+    #cv2.waitKey(0)

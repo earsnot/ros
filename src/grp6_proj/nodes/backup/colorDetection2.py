@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 import cv2
 import numpy as np
+import rospy
+from std_msgs.msg import String
+from std_msgs.msg import Float32
 
 #Hue has value from 0-180 (value from Photoshop/2)
 #Saturation 255 is full color, 0 is white (photoshop values is in %)
@@ -10,6 +13,8 @@ import numpy as np
 #inputColor = 'green'
 #Threshold values
 
+pub = rospy.Publisher('XandY', Float32, queue_size=10)
+rospy.init_node('colorDetection2', anonymous=True) #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
 
 
 def ColorDetector(Color):
@@ -18,7 +23,7 @@ def ColorDetector(Color):
     thresholdValueYellow = 50
     thresholdValueBlue = 65
     # Read image
-    frame = cv2.imread('top1.png')
+    frame = cv2.imread('/home/ros/catkin_repo/ros/src/grp6_proj/nodes/top1')
 
     #resize frame
     #frame = cv2.resize(frame, (640,480))
@@ -106,12 +111,12 @@ def ColorDetector(Color):
 
     
     # show those areas
-    cv2.imshow('exrWithThreshold', thresholded)
+    #cv2.imshow('exrWithThreshold', thresholded)
     cv2.waitKey()
 
     #dette kode er taget fra undervisningen - Skrevet af: Mads Dyrmann and Henrik Skov Midtiby
     # Find connected components
-    contours, hierarchy = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, contours, _ = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     # loop through all components, one at the time
     for cnt in contours:
@@ -125,17 +130,19 @@ def ColorDetector(Color):
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
             #print(cx, cy)
-            
+            #coordinates = "x: %s, y: %d" % (cx,cy)
+
             #alternativ
             # cx=sum(cnt[:,0][:,0])/len(cnt[:,0][:,0])
             # cy=sum(cnt[:,0][:,1])/len(cnt[:,0][:,1])
-            
-            #cxRange = (cx>34 and cx<310)
-            #cyRange = (cy>1 and cy<600)
 
             #Print the coordinates that are within our limits/table
-            if (cy>34 and cy<310) and (cx>1 and cx<600):
-                print ('x:', cx,'y:', cy)
+            A1 = (cy>34 and cy<310) and (cx>1 and cx<237)
+            A2 = (cy>34 and cy<310) and (cx>381 and cx<600)
+            A3 = (cy>34 and cy<233) and (cx>237 and cx<381)
+            if (A1 or A2 or A3):
+                print (cx)
+                print (cy)
             
             #print ('x:', cx,'y:', cy)
             
@@ -146,7 +153,10 @@ def ColorDetector(Color):
     #viser billede med kryds p
     cv2.imshow('frame annotated', frame)
 
-    cv2.waitKey(0)
+    cv2.waitKey(0)   
+    
+    return
+ColorDetector('green')   #used for test
 
     return 
 

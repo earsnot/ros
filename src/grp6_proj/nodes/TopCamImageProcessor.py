@@ -14,7 +14,6 @@ from grp6_proj.msg import block_coords
 
 pub = rospy.Publisher('XandY', Float32, queue_size=10)
 rospy.init_node('TopCamImageProcessor') #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
-rospy.Sub
 
 def ColorDetector(Color):
     thresholdValueGreen = 50

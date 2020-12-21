@@ -1,22 +1,29 @@
 #!/usr/bin/env python
 import cv2
 import numpy as np
+import rospy
+from std_msgs.msg import String
+from std_msgs.msg import Float32
+
+#Hue has value from 0-180 (value from Photoshop/2)
+#Saturation 255 is full color, 0 is white (photoshop values is in %)
+#Value/brightness interval from 0-255. 255 is full color, 0 is black (photoshop values is in %)
+
 
 #inputColor = 'green'
 #Threshold values
-thresholdValueGreen = 10
-thresholdValueRed = 170
-thresholdValueYellow = 150
-thresholdValueBlue = 1
+
+pub = rospy.Publisher('XandY', Float32, queue_size=10)
+rospy.init_node('colorDetection2', anonymous=True) #The next line, rospy.init_node(NAME, ...), is very important as it tells rospy the name of your node -- until rospy has this information, it cannot start communicating with the ROS Master. In this case, your node will take on the name talker. NOTE: the name must be a base name, i.e. it cannot contain any slashes "/".
 
 
 def ColorDetector(Color):
-    thresholdValueGreen = 10
-    thresholdValueRed = 170
-    thresholdValueYellow = 150
-    thresholdValueBlue = 1
+    thresholdValueGreen = 50
+    thresholdValueRed = 50
+    thresholdValueYellow = 50
+    thresholdValueBlue = 65
     # Read image
-    frame = cv2.imread('top1.png')
+    frame = cv2.imread('/home/ros/catkin_repo/ros/src/grp6_proj/nodes/top1')
 
     #resize frame
     #frame = cv2.resize(frame, (640,480))
@@ -28,11 +35,14 @@ def ColorDetector(Color):
     #wait untill keypress
     cv2.waitKey()
     
-    #finder farven grn
+    #find color green
     if Color == 'green':
         # Range for green
-        green_lower = np.array([30,50,50])
-        green_upper = np.array([90,255,255])
+        #Hue has value from 0-180 (value from Photoshop/2)
+        #Saturation 255 is full color, 0 is white (photoshop values is in %)
+        #Value/brightness interval from 0-255. 255 is full color, 0 is black (photoshop values is in %)
+        green_lower = np.array([40,65,100])
+        green_upper = np.array([75,255,255])
         mask_green = cv2.inRange(hsv, green_lower, green_upper)
 
         exr = cv2.bitwise_and(frame, frame, mask=mask_green)
@@ -41,7 +51,7 @@ def ColorDetector(Color):
         #HSVtoGRAY(exr)
         exr = cv2.cvtColor(exr,cv2.COLOR_HSV2BGR)
         exr = cv2.cvtColor(exr, cv2.COLOR_BGR2GRAY)
-        #Threshold for hvornr farven bliver talt med
+        #Threshold for hvornaar farven bliver talt med
         thresholded = ((exr>thresholdValueGreen)*255).astype('uint8')
 
     
@@ -52,7 +62,7 @@ def ColorDetector(Color):
         mask_red1 = cv2.inRange(hsv, red_lower, red_upper)
 
         # Range for upper range
-        red_lower = np.array([170,150,100])
+        red_lower = np.array([170,150,50])
         red_upper = np.array([180,255,255])
         mask_red2 = cv2.inRange(hsv, red_lower, red_upper)
 
@@ -70,8 +80,8 @@ def ColorDetector(Color):
     
     elif Color == 'blue':
         # Range for blue
-        blue_lower = np.array([94,150,100])
-        blue_upper = np.array([126,255,255])
+        blue_lower = np.array([105,50,50])
+        blue_upper = np.array([125,255,255])
         mask_blue = cv2.inRange(hsv, blue_lower, blue_upper)
 
         exr = cv2.bitwise_and(frame, frame, mask=mask_blue)
@@ -85,8 +95,8 @@ def ColorDetector(Color):
     
     elif Color == 'yellow':
         # Range for yellow
-        yellow_lower = np.array([10,80,20])
-        yellow_upper = np.array([30,255,255])
+        yellow_lower = np.array([25,80,20])
+        yellow_upper = np.array([35,255,255])
         mask_yellow = cv2.inRange(hsv, yellow_lower, yellow_upper)
 
         exr = cv2.bitwise_and(frame, frame, mask=mask_yellow)
@@ -97,16 +107,16 @@ def ColorDetector(Color):
         
         thresholded = ((exr>thresholdValueYellow)*255).astype('uint8')
     else: 
-        print("***Please choose a valid color***")
+        print('***Please choose a valid color***')
 
     
     # show those areas
-    cv2.imshow('exr', thresholded)
+    #cv2.imshow('exrWithThreshold', thresholded)
     cv2.waitKey()
 
     #dette kode er taget fra undervisningen - Skrevet af: Mads Dyrmann and Henrik Skov Midtiby
     # Find connected components
-    contours, hierarchy = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    _, contours, _ = cv2.findContours(thresholded, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
     # loop through all components, one at the time
     for cnt in contours:
@@ -120,12 +130,21 @@ def ColorDetector(Color):
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
             #print(cx, cy)
-            
+            #coordinates = "x: %s, y: %d" % (cx,cy)
+
             #alternativ
             # cx=sum(cnt[:,0][:,0])/len(cnt[:,0][:,0])
             # cy=sum(cnt[:,0][:,1])/len(cnt[:,0][:,1])
-            # print cx1,cy1
+
+            #Print the coordinates that are within our limits/table
+            A1 = (cy>34 and cy<310) and (cx>1 and cx<237)
+            A2 = (cy>34 and cy<310) and (cx>381 and cx<600)
+            A3 = (cy>34 and cy<233) and (cx>237 and cx<381)
+            if (A1 or A2 or A3):
+                print (cx)
+                print (cy)
             
+            #print ('x:', cx,'y:', cy)
             
             # Tegn et sigtekorn p billedet, der markerer elementet.
             # <alter these lines>
@@ -134,7 +153,10 @@ def ColorDetector(Color):
     #viser billede med kryds p
     cv2.imshow('frame annotated', frame)
 
-    cv2.waitKey(0)
+    cv2.waitKey(0)   
+    
+    return
+ColorDetector('green')   #used for test
 
     return 
 
